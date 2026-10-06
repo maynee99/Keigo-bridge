@@ -1,0 +1,142 @@
+[
+  {
+    "id": "check-landlord-rent-casual",
+    "message": "明日の家賃、ちょっと遅れるわ。ごめんね！",
+    "recipient": "landlord",
+    "channel": "text",
+    "expect": { "mode": "check", "verdict": "too_casual" }
+  },
+  {
+    "id": "check-boss-day-off-casual",
+    "message": "部長、明日ちょっと休むね。よろしく！",
+    "recipient": "boss",
+    "channel": "text",
+    "expect": { "mode": "check", "verdict": "too_casual" }
+  },
+  {
+    "id": "check-client-email-fits",
+    "message": "いつもお世話になっております。明日の会議の資料をお送りいたします。ご確認のほど、よろしくお願いいたします。",
+    "recipient": "client",
+    "channel": "email",
+    "expect": { "mode": "check", "verdict": "fits" }
+  },
+  {
+    "id": "check-friend-drinks-fits",
+    "message": "今日飲みに行かない？",
+    "recipient": "friend",
+    "channel": "text",
+    "expect": { "mode": "check", "verdict": "fits" }
+  },
+  {
+    "id": "check-friend-plans-formal",
+    "message": "恐れ入りますが、今週末のご予定をお伺いしてもよろしいでしょうか。",
+    "recipient": "friend",
+    "channel": "text",
+    "expect": { "mode": "check", "verdict": "too_formal" }
+  },
+  {
+    "id": "check-shop-colour-fits",
+    "message": "すみません、これの色違いはありますか？",
+    "recipient": "shop",
+    "channel": "spoken",
+    "expect": { "mode": "check", "verdict": "fits" }
+  },
+  {
+    "id": "check-client-email-casual",
+    "message": "了解です！明日の打ち合わせ、よろしくです〜",
+    "recipient": "client",
+    "channel": "email",
+    "expect": { "mode": "check", "verdict": "too_casual" }
+  },
+  {
+    "id": "check-boss-gokurousama",
+    "message": "ご苦労様です。資料ありがとうございました。",
+    "recipient": "boss",
+    "channel": "text",
+    "expect": { "mode": "check", "verdict": "not_fits" }
+  },
+  {
+    "id": "check-shop-price-casual",
+    "message": "おい、これいくら？",
+    "recipient": "shop",
+    "channel": "spoken",
+    "expect": { "mode": "check", "verdict": "too_casual" }
+  },
+  {
+    "id": "check-family-dinner-formal",
+    "message": "お母様、本日の夕食は何でございましょうか。",
+    "recipient": "family",
+    "channel": "text",
+    "expect": { "mode": "check", "verdict": "too_formal" }
+  },
+  {
+    "id": "check-coworker-meeting-fits",
+    "message": "田中さん、明日の会議の件ですが、15時からでも大丈夫でしょうか。",
+    "recipient": "coworker",
+    "channel": "text",
+    "expect": { "mode": "check", "verdict": "fits" }
+  },
+  {
+    "id": "check-boss-mixed",
+    "message": "お忙しいところ恐縮ですが、明日来れる？",
+    "recipient": "boss",
+    "channel": "text",
+    "expect": { "mode": "check", "verdict": "not_fits" }
+  },
+  {
+    "id": "write-landlord-hot-water",
+    "message": "The hot water stopped working this morning. Can you fix it?",
+    "recipient": "landlord",
+    "channel": "text",
+    "expect": { "mode": "write", "recommended": ["polite", "keigo"] }
+  },
+  {
+    "id": "write-friend-ramen",
+    "message": "Want to grab ramen after work?",
+    "recipient": "friend",
+    "channel": "text",
+    "expect": { "mode": "write", "recommended": ["casual"] }
+  },
+  {
+    "id": "write-boss-late",
+    "message": "Sorry, I'll be 10 minutes late to the meeting.",
+    "recipient": "boss",
+    "channel": "text",
+    "expect": { "mode": "write", "recommended": ["polite", "keigo"] }
+  },
+  {
+    "id": "write-client-shipping",
+    "message": "Thank you for your order. We will ship it tomorrow.",
+    "recipient": "client",
+    "channel": "email",
+    "expect": { "mode": "write", "recommended": ["keigo"] }
+  },
+  {
+    "id": "write-official-address",
+    "message": "I'd like to register my change of address.",
+    "recipient": "official",
+    "channel": "spoken",
+    "expect": { "mode": "write", "recommended": ["polite", "keigo"] }
+  },
+  {
+    "id": "write-shop-size",
+    "message": "Do you have this in a larger size?",
+    "recipient": "shop",
+    "channel": "spoken",
+    "expect": { "mode": "write", "recommended": ["polite"] }
+  },
+  {
+    "id": "write-partner-birthday",
+    "message": "Happy birthday! Let's celebrate this weekend.",
+    "recipient": "family",
+    "channel": "text",
+    "expect": { "mode": "write", "recommended": ["casual"] }
+  },
+  {
+    "id": "write-professor-slides",
+    "message": "Could you please send me the slides from today's lecture?",
+    "recipient": "teacher",
+    "channel": "email",
+    "expect": { "mode": "write", "recommended": ["keigo"] }
+  }
+]
