@@ -16,9 +16,13 @@ Every Japanese output comes with romaji and an English back-translation of *the 
 
 _UI preview in demo mode (sample data)._
 
-## Why
+## Why I built this
 
-Living in Japan while learning the language, the hard part often isn't vocabulary. It's knowing how polite to be. The same request needs different Japanese for a friend, a landlord, a boss or a client, and machine translation picks one level without telling you which, or whether it fits.
+I live in Japan and I'm still learning Japanese. Day to day, the hardest part often isn't vocabulary. It's knowing how polite to be. The same request needs different Japanese for a friend, a landlord, a boss or a client, and getting it wrong can make you sound rude or strangely stiff. Translation apps pick one level without telling you which, or whether it fits the person you're talking to.
+
+I kept running into this myself, so I built the tool I wanted: one that tells me which level to use for this person, shows me exactly what I'd be saying, and checks my own Japanese before I send it. I hope it makes everyday life a little easier for anyone living in Japan who is still learning the language.
+
+I built it with [Claude Code](https://claude.com/claude-code). The decisions below are the ones that shaped it.
 
 ## How it works
 
@@ -43,14 +47,22 @@ flowchart LR
 
 ## Decisions and tradeoffs
 
-- **Mode detection happens in code, not in the model.** The UI shows "English detected" or "Japanese detected" as you type, before anything is sent. It costs nothing and can be unit-tested. Japanese characters are weighted 3× against Latin letters, so a Japanese draft with a loanword like "meeting" still counts as Japanese.
-- **Structured outputs, with the JSON Schema generated from Zod.** The API is constrained to the same schema the server validates against, so the two can't drift. Field descriptions in the schema double as instructions to the model.
-- **Back-translate the output, not the input.** Repeating the user's English back to them proves nothing. Translating the Japanese back shows what the recipient will actually read.
-- **The recipient has no default.** The right politeness depends entirely on who it's for, so the user has to choose; a silent default would give confident wrong answers.
-- **Model: Claude Opus 5.5 at medium effort.** Nuanced social judgement is the whole product, so quality comes before cost per request. `ANTHROPIC_MODEL` switches models (for example `claude-sonnet-5-5`, half the price); rerun the eval to compare before switching.
-- **Refusal fallback is on.** If a safety classifier declines a request, the API retries it on a fallback model inside the same call instead of returning nothing.
-- **Cost protection:** messages are capped at 1,000 characters, each IP gets 10 requests per 10 minutes, and the hard limit is a monthly spend limit set in the Anthropic Console. The rate limiter lives in memory, so on serverless it is per instance and best-effort.
-- **Left out on purpose:** accounts, history and streaming. Answers are short, so a spinner is acceptable for a first version.
+Every decision starts from the person using it: someone in Japan, about to send a message, who can't fully judge the Japanese themselves.
+
+**Product**
+
+- **Show what the Japanese actually says.** Each result includes an English back-translation of the Japanese itself, not a repeat of what you typed. If you can't fully read the output, that's the only way to know what you're about to send.
+- **Make you choose who it's for.** The right politeness depends entirely on the recipient, so there is no default. A silent default would give confident wrong answers.
+- **Work in both directions.** Learners often write their own Japanese and just want it checked. Pasting Japanese gets a verdict, the exact phrases that are off and a fix, instead of a translation of something you already wrote.
+- **Left out on purpose:** accounts, history and streaming. Answers are short, so a loading state is fine for a first version.
+
+**Technical**
+
+- **Detect the language in code, not with the AI.** The page says "English detected" or "Japanese detected" as you type, before anything is sent. It's instant, free and unit-tested. Japanese characters are weighted 3× against Latin letters, so a Japanese draft with a loanword like "meeting" still counts as Japanese.
+- **Structured output, checked twice.** Claude's answer is constrained to a JSON Schema generated from the same Zod schema the server validates against, so the UI never parses free text and the two can't drift. Field descriptions in the schema double as instructions to the model.
+- **Quality over cost per request.** Getting social nuance right is the whole point, so it runs on Claude Opus 5.5 at medium effort. `ANTHROPIC_MODEL` switches models (for example `claude-sonnet-5-5`, half the price); rerun the eval to compare before switching.
+- **Never fail silently.** If a safety classifier declines a request, the API retries it on a fallback model in the same call. If that fails too, the user gets a plain-English message instead of a blank screen.
+- **Keep a public demo affordable.** Messages are capped at 1,000 characters, and each IP gets 10 requests per 10 minutes. That limiter lives in memory, so on serverless it is per instance and best-effort; the hard cap is a monthly spend limit set in the Anthropic Console.
 
 ## Evaluation
 

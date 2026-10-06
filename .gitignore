@@ -40,3 +40,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editors and OS
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+
+# personal Claude Code settings
+.claude/settings.local.json
