@@ -7,7 +7,7 @@ Say it the right way in Japanese for whoever you're talking to.
 
 Every Japanese output comes with romaji and an English back-translation of *the Japanese itself*, so you can check what you'd actually be saying before you send it.
 
-**Live demo:** _add your Vercel URL here_
+**Live demo:** https://keigo-bridge.vercel.app
 
 <p>
   <img src="docs/write.png" alt="Writing an English message to a landlord in three politeness levels" width="520">
