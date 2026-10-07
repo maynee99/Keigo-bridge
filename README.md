@@ -80,7 +80,7 @@ Each run writes a report to `evals/results/` with two kinds of score:
 
 Unit tests (`npm test`) also check that every eval case is routed to the right mode, without calling the API.
 
-**Latest results:** _not run yet_
+**Latest results** (2026-10-07, `claude-opus-5-5`): **20/20** cases picked the expected level or verdict, with an average response time of 9.4s. Full report: [`evals/results/2026-10-07-claude-opus-5-5.md`](evals/results/2026-10-07-claude-opus-5-5.md). This only scores the decision; the native-speaker grades for how natural the Japanese sounds are still blank.
 
 ## Run it locally
 
