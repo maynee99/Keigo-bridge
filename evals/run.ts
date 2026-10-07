@@ -3,6 +3,7 @@
 // full run on the default model). Usage: npm run eval [-- --only <id-substring>]
 
 import { mkdirSync, writeFileSync } from "node:fs";
+import Anthropic from "@anthropic-ai/sdk";
 import { analyze, DEFAULT_MODEL, type AnalyzeOutput } from "../src/lib/analyze";
 import { detectMode } from "../src/lib/detect";
 import { CHANNELS, RECIPIENTS } from "../src/lib/options";
@@ -15,6 +16,7 @@ type Row = {
   output: string;
   seconds: number;
   tokens: { input: number; output: number };
+  errored: boolean;
 };
 
 function expectedLabel(c: EvalCase): string {
@@ -48,18 +50,29 @@ async function main() {
   const cases = loadCases().filter((c) => !only || c.id.includes(only));
   const model = process.env.ANTHROPIC_MODEL ?? DEFAULT_MODEL;
 
+  // Claude Code cloud sessions hide ANTHROPIC_API_KEY from the commands they run,
+  // so there the key is set as KEIGO_EVAL_KEY instead. Locally, ANTHROPIC_API_KEY works as usual.
+  const evalKey = process.env.KEIGO_EVAL_KEY;
+  const client = evalKey ? new Anthropic({ apiKey: evalKey }) : new Anthropic();
+  console.log(`Key: ${evalKey ? "KEIGO_EVAL_KEY" : "default (ANTHROPIC_API_KEY)"} · Model: ${model}\n`);
+
   const rows: Row[] = [];
   for (const testCase of cases) {
     const started = Date.now();
     try {
       // Mode comes from the same detector the app uses; a wrong detection fails the case.
-      const out = await analyze(testCase, { model, mode: detectMode(testCase.message) ?? undefined });
+      const out = await analyze(testCase, {
+        client,
+        model,
+        mode: detectMode(testCase.message) ?? undefined,
+      });
       const scored = score(testCase, out);
       rows.push({
         testCase,
         ...scored,
         seconds: (Date.now() - started) / 1000,
         tokens: { input: out.usage.inputTokens, output: out.usage.outputTokens },
+        errored: false,
       });
     } catch (err) {
       rows.push({
@@ -69,10 +82,21 @@ async function main() {
         output: "",
         seconds: (Date.now() - started) / 1000,
         tokens: { input: 0, output: 0 },
+        errored: true,
       });
     }
     const last = rows.at(-1)!;
     console.log(`${last.pass ? "PASS" : "FAIL"}  ${testCase.id}  (got ${last.got}, ${last.seconds.toFixed(1)}s)`);
+  }
+
+  // A run where nothing reached Claude (missing or invalid key, no credit) says
+  // nothing about quality, so don't write a 0/N report that could be mistaken for one.
+  if (rows.every((r) => r.errored)) {
+    console.error(
+      "\nNo case got an answer from Claude, so no report was written. Check the API key (KEIGO_EVAL_KEY or ANTHROPIC_API_KEY) and your credit balance.",
+    );
+    process.exitCode = 1;
+    return;
   }
 
   const passed = rows.filter((r) => r.pass).length;
