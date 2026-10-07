@@ -1,6 +1,6 @@
 // Runs every case in evals/cases.json through the real Claude call and writes
-// a Markdown report to evals/results/. Costs real API credit (roughly $1-2 per
-// full run on the default model). Usage: npm run eval [-- --only <id-substring>]
+// a Markdown report to evals/results/. Costs real API credit (about $0.45 per
+// full run on the default model, measured 2026-10-07). Usage: npm run eval [-- --only <id-substring>]
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import Anthropic from "@anthropic-ai/sdk";

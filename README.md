@@ -60,7 +60,7 @@ Every decision starts from the person using it: someone in Japan, about to send 
 
 - **Detect the language in code, not with the AI.** The page says "English detected" or "Japanese detected" as you type, before anything is sent. It's instant, free and unit-tested. Japanese characters are weighted 3× against Latin letters, so a Japanese draft with a loanword like "meeting" still counts as Japanese.
 - **Structured output, checked twice.** Claude's answer is constrained to a JSON Schema generated from the same Zod schema the server validates against, so the UI never parses free text and the two can't drift. Field descriptions in the schema double as instructions to the model.
-- **Quality over cost per request.** Getting social nuance right is the whole point, so it runs on Claude Opus 5.5 at medium effort. `ANTHROPIC_MODEL` switches models (for example `claude-sonnet-5-5`, half the price); rerun the eval to compare before switching.
+- **Quality over cost per request.** Getting social nuance right is the whole point, so it runs on Claude Opus 5.5 at medium effort, which cost about 2 cents per message in the first eval run. `ANTHROPIC_MODEL` switches models (for example `claude-sonnet-5-5`, half the price); rerun the eval to compare before switching.
 - **Never fail silently.** If a safety classifier declines a request, the API retries it on a fallback model in the same call. If that fails too, the user gets a plain-English message instead of a blank screen.
 - **Keep a public demo affordable.** Messages are capped at 1,000 characters, and each IP gets 10 requests per 10 minutes. That limiter lives in memory, so on serverless it is per instance and best-effort; the hard cap is a monthly spend limit set in the Anthropic Console.
 
@@ -69,7 +69,7 @@ Every decision starts from the person using it: someone in Japan, about to send 
 [`evals/cases.json`](evals/cases.json) has 20 labelled cases across 9 recipient types and 3 channels: 12 Japanese drafts to check (too casual, too formal, mixed levels, honorifics used in the wrong direction such as ご苦労様です to a boss, and drafts that are fine as written) and 8 English messages to write.
 
 ```bash
-npm run eval            # all cases, roughly $1-2 on the default model
+npm run eval            # all cases, about $0.45 on the default model
 npm run eval -- --only check-boss   # a subset
 ```
 
