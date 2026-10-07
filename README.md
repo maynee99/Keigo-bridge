@@ -18,9 +18,9 @@ _UI preview in demo mode (sample data)._
 
 ## Why I built this
 
-I live in Japan and I'm still learning Japanese. Day to day, the hardest part often isn't vocabulary. It's knowing how polite to be. The same request needs different Japanese for a friend, a landlord, a boss or a client, and getting it wrong can make you sound rude or strangely stiff. Translation apps pick one level without telling you which, or whether it fits the person you're talking to.
+I built this because I have found that navigating the Japanese language is incredibly nuanced, and knowing what tone to use in what situation is something that comes with experience. I am still early into my time in Japan, and as such I created this tool to assist me in my day-to-day life.
 
-I kept running into this myself, so I built the tool I wanted: one that tells me which level to use for this person, shows me exactly what I'd be saying, and checks my own Japanese before I send it. I hope it makes everyday life a little easier for anyone living in Japan who is still learning the language.
+The same request needs different Japanese for a friend, a landlord, a boss or a client, and getting it wrong can make you sound rude or strangely stiff. Translation apps pick one level without telling you which, or whether it fits the person you're talking to. Keigo Bridge tells me which level to use for this person, shows me exactly what I'd be saying, and checks my own Japanese before I send it. I hope it makes everyday life a little easier for anyone else in Japan who is still learning the language.
 
 I built it with [Claude Code](https://claude.com/claude-code). The decisions below are the ones that shaped it.
 
